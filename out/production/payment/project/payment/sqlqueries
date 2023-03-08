@@ -1,0 +1,41 @@
+ORACLE DATABASE QUERIES
+
+SQL> CREATE TABLE customer(
+  2  id number primary key,
+  3  first_name nvarchar2(20),
+  4  last_name nvarchar2(20),
+  5  age number(2),
+  6  card_number varchar2(16),
+  7  balance number);
+
+Table created.
+
+SQL> CREATE SEQUENCE customer_seq START WITH 1 INCREMENT BY 1;
+
+SQL> CREATE TABLE transaction(
+  2  id number primary key,
+  3  date_time timestamp,
+  4  sender_card_number varchar2(16),
+  5  receiver_card_number varchar2(16),
+  6  amount long);
+
+Table created.
+
+SQL> DESCRIBE customer;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                        NOT NULL NUMBER
+ FIRST_NAME                                         NVARCHAR2(20)
+ LAST_NAME                                          NVARCHAR2(20)
+ AGE                                                NUMBER(2)
+ CARD_NUMBER                                        VARCHAR2(16)
+ BALANCE                                            NUMBER
+
+SQL> DESCRIBE transaction;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                        NOT NULL NUMBER
+ DATE_TIME                                          TIMESTAMP(6)
+ SENDER_CARD_NUMBER                                 VARCHAR2(16)
+ RECEIVER_CARD_NUMBER                               VARCHAR2(16)
+ AMOUNT                                             LONG

@@ -1,0 +1,73 @@
+ORACLE DATABASE QUERIES ON COMMAND PROMPT
+
+SQL> CREATE TABLE customer(
+  2  id number primary key,
+  3  first_name nvarchar2(20),
+  4  last_name nvarchar2(20),
+  5  age number(2),
+  6  card_number varchar2(16),
+  7  balance number);
+
+Table created.
+
+SQL> CREATE SEQUENCE customer_seq START WITH 1 INCREMENT BY 1;
+
+SQL> CREATE TABLE transaction(
+  2  id number primary key,
+  3  customer_id references customer,
+  4  date_time timestamp,
+  5  sender_card_number varchar2(16),
+  6  receiver_card_number varchar2(16),
+  7  amount number);
+
+Table created.
+
+SQL> DESCRIBE customer;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                        NOT NULL NUMBER
+ FIRST_NAME                                         NVARCHAR2(20)
+ LAST_NAME                                          NVARCHAR2(20)
+ AGE                                                NUMBER(2)
+ CARD_NUMBER                                        VARCHAR2(16)
+ BALANCE                                            NUMBER
+
+SQL> DESCRIBE transaction;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                        NOT NULL NUMBER
+ CUSTOMER_ID                                        NUMBER
+ DATE_TIME                                          TIMESTAMP(6)
+ SENDER_CARD_NUMBER                                 VARCHAR2(16)
+ RECEIVER_CARD_NUMBER                               VARCHAR2(16)
+ AMOUNT                                             LONG
+
+SQL> CREATE VIEW withdraw AS SELECT
+  2  customer.id AS CUSTOMER_ID,
+  3  customer.first_name AS CUSTOMER_FIRST_NAME,
+  4  customer.last_name AS CUSTOMER_LAST_NAME,
+  5  customer.card_number AS CUSTOMER_CARD_NUMBER,
+  6  customer.balance AS CUSTOMER_BALANCE,
+  7  transaction.date_time AS TRANSACTION_DATE_TIME,
+  8  transaction.customer_id AS TRANSACTION_CUSTOMER_ID,
+  9  transaction.receiver_card_number AS TRANSACTION_CARD_NUMBER,
+ 10  (customer.balance - transaction.amount) AS WITHDRAW_AMOUNT
+ 11  FROM customer, transaction
+ 12  WHERE customer.id = transaction.customer_id;
+
+View created.
+
+SQL> CREATE VIEW deposit AS SELECT
+  2  customer.id AS CUSTOMER_ID,
+  3  customer.first_name AS CUSTOMER_FIRST_NAME,
+  4  customer.last_name AS CUSTOMER_LAST_NAME,
+  5  customer.card_number AS CUSTOMER_CARD_NUMBER,
+  6  customer.balance AS CUSTOMER_BALANCE,
+  7  transaction.date_time AS TRANSACTION_DATE_TIME,
+  8  transaction.customer_id AS TRANSACTION_CUSTOMER_ID,
+  9  transaction.receiver_card_number AS TRANSACTION_CARD_NUMBER,
+ 10  (customer.balance + transaction.amount) AS DEPOSIT_AMOUNT
+ 11  FROM customer, transaction
+ 12  WHERE customer.id = transaction.customer_id;
+
+View created.
